@@ -9,4 +9,7 @@ public class CityWeather {
     public double windSpeed;
     public double humidity;
 
+    public CityWeather(String countryName) {
+        this.countryName = countryName;
+    }
 }

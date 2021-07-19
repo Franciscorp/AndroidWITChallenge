@@ -9,8 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import kotlinx.coroutines.Dispatchers;
-
 public class OpenWeatherMapCommunication{
 //    public String openWeatherApiLink = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=";
     public String openWeatherApiLink = "https://api.openweathermap.org/data/2.5/weather?q=";

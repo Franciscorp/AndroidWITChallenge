@@ -29,28 +29,6 @@ public class MainActivity extends AppCompatActivity {
         //VARS START UP
         weatherCommunication = new OpenWeatherMapCommunication("Coimbra", null, Constants.UnitsOfMeasure.METRIC);
 
-
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//                weatherInfo = weatherCommunication.getWeatherData("Coimbra", null, Constants.UnitsOfMeasure.METRIC);
-////                weatherInfo = weatherCommunication.jsonObtained;
-//                textViewWeatherInfo.setText(weatherInfo);
-//            }
-//        }, 5000);   //5 seconds
-//
-//
-//        new Thread(new Runnable() {
-//            public void run() {
-//                weatherInfo = weatherCommunication.getWeatherData("Coimbra", null, Constants.UnitsOfMeasure.METRIC);
-//                try{
-//                    textViewWeatherInfo.setText(weatherInfo);
-//                }catch(Exception e){
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-
         callWeatherApi();
 
     }

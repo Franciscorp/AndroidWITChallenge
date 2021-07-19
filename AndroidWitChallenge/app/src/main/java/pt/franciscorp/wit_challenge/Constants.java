@@ -8,4 +8,18 @@ public class Constants {
         IMPERIAL
     }
 
+    //to add more cities to retrieve from api
+    //add here
+    public enum Cities {
+        Lisbon,
+        Madrid,
+        Berlim,
+        Copenhagen,
+        Rome,
+        London,
+        Dublin,
+        Prague,
+        vienna
+    }
+
 }
