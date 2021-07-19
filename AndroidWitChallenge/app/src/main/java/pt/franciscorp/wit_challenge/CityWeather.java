@@ -3,6 +3,8 @@ package pt.franciscorp.wit_challenge;
 public class CityWeather {
     public String countryName;
     public String cityName;
+    public double latitude;
+    public double longitude;
 
     public String weatherCondition;
     public String weatherTypeDescription;
@@ -92,5 +94,10 @@ public class CityWeather {
 
     public CityWeather(String cityName) {
         this.cityName = cityName;
+    }
+
+    public CityWeather(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

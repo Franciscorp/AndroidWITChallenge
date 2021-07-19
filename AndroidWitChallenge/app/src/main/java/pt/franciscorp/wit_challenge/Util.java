@@ -8,7 +8,11 @@ public class Util {
 
     //parser comes from: https://www.spaceotechnologies.com/implement-openweathermap-api-android-app-tutorial/
 
+    //TODO tirar a saida do cityweather
     public static CityWeather getCityWeatherFromJson(CityWeather cityWeather, String json){
+        if(isStringEmptyOrNull(json))
+            return null;
+
         try {
             JSONObject jsonObject = new JSONObject(json);
 
@@ -41,6 +45,13 @@ public class Util {
         }
 
         return cityWeather;
+    }
+
+    public static boolean isStringEmptyOrNull(String str){
+        if (str == null || str.isEmpty() || str.trim().isEmpty())
+            return true;
+        else
+            return false;
     }
 
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
