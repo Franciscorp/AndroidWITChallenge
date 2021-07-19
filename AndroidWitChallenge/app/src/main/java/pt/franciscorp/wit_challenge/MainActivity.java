@@ -11,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewWeatherInfo;
     String weatherInfo = "";
 
-
+    WeatherData weatherData;
     OpenWeatherMapCommunication weatherCommunication;
 
 
@@ -27,10 +27,33 @@ public class MainActivity extends AppCompatActivity {
         textViewWeatherInfo = findViewById(R.id.TextViewWeatherInfo);
 
         //VARS START UP
+        weatherData = new WeatherData();
         weatherCommunication = new OpenWeatherMapCommunication("Coimbra", null, Constants.UnitsOfMeasure.METRIC);
 
         callWeatherApi();
+        getAllCitiesWeatherFromApi();
+        System.out.println();
+    }
 
+    public void getAllCitiesWeatherFromApi(){
+        for(CityWeather city : weatherData.cityWeatherArrayList){
+            callWeatherApi(city);
+        }
+    }
+
+    public void callWeatherApi(CityWeather city) {
+        new Thread(new Runnable() {
+            public void run() {
+                weatherInfo = weatherCommunication.getWeatherData(city.cityName, null, Constants.UnitsOfMeasure.METRIC);
+                city.completeJson = weatherInfo;
+
+                textViewWeatherInfo.post(new Runnable() {
+                    public void run() {
+                        textViewWeatherInfo.setText(weatherInfo);
+                    }
+                });
+            }
+        }).start();
     }
 
     public void callWeatherApi() {

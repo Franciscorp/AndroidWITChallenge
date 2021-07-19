@@ -8,8 +8,10 @@ public class CityWeather {
     public double currentTemperature;
     public double windSpeed;
     public double humidity;
+    //TODO debug, apagar
+    public String completeJson;
 
-    public CityWeather(String countryName) {
-        this.countryName = countryName;
+    public CityWeather(String cityName) {
+        this.cityName = cityName;
     }
 }
