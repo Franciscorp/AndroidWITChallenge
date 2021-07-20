@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         //47 minutes for json parser
         //15m for icon
         //60m for current location
-        //10m
+        //20m change the theme, apply dark theme, title and others
+        //43m lv, how it works, design changes
+        
         //UI START UP
         textViewWeatherInfo = findViewById(R.id.TextViewWeatherInfo);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
