@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
         //60m for current location
         //20m change the theme, apply dark theme, title and others
         //43m lv, how it works, design changes
-        
+        //icons + debug full list
+
         //UI START UP
         textViewWeatherInfo = findViewById(R.id.TextViewWeatherInfo);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -81,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
 
 //        callWeatherApi(weatherData.cityWeatherArrayList.get(0));
         System.out.println();
+    }
+
+    private void fillWeatherListWith10Elements(){
+        if(weatherData.cityWeatherArrayList.size() < 1 || weatherData.cityWeatherArrayList.size() > 10)
+            return;
+        CityWeather city = weatherData.cityWeatherArrayList.get(0);
+
+        int i = weatherData.cityWeatherArrayList.size();
+        while(i < 10){
+            weatherData.cityWeatherArrayList.add(city);
+            i++;
+        }
     }
 
     private void setLayoutForApp() {
