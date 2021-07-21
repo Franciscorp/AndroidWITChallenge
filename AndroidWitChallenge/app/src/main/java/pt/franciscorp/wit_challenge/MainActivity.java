@@ -54,6 +54,9 @@ import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getCityWeatherFr
 //60m list view + threads efficiency
 //45m bug fix current location. ListView size adapatable
 //30m show current location city name
+
+//total so far: 624
+
 //30m updateInterval for app. Plus Optimizations
 //20m tests of update optimization
 //35m setting up new activity, passing data and organizing layout
@@ -65,13 +68,16 @@ import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getCityWeatherFr
 //10m some comments explaining the logic in some function
 //70m debbugging permissions. it's working now
 
+//Total so far more or less: 400
+//1025 minutes
+
+//android project Developed by Francisco Rodrigues Pinto
 
 public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
     private Handler updateWeatherHandler;
     private int numberOfCyclesPassed = 0;
-    private boolean doesHavePermissions = false;
     ListView listViewWeatherCities;
     Thread[] connectionToApiThreads;
 
@@ -95,27 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
         weatherData = new WeatherData();
         connectionToApiThreads = new Thread[weatherData.cityWeatherArrayList.size()];
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            },44);
-        }else{
-            setupForOnCreateData();
-        }
-    }
-
-    private void setupForOnCreateData(){
-        doesHavePermissions = true;
         weatherCommunication = new OpenWeatherMapCommunication();
-        updateWeatherHandler = new Handler();
         setWeatherListView();
+        updateWeatherHandler = new Handler();
 
         listViewWeatherCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -125,13 +113,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            },44);
+        }else{
+            updateLocationAndGetItsWeather();
+        }
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 44) {
-            if (Arrays.asList(grantResults).contains(PackageManager.PERMISSION_GRANTED)) {
-                setupForOnCreateData();
+            if (!Arrays.asList(grantResults).contains(PackageManager.PERMISSION_GRANTED)) {
+                updateLocationAndGetItsWeather();
             }
         }
     }
@@ -140,30 +143,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(doesHavePermissions)
-            stopWeatherUpdateTask();
+        stopWeatherUpdateTask();
     }
 
     @Override
     public void onStart() {
-        updateLocationAndGetItsWeather();
-        if(doesHavePermissions)
-            startWeatherUpdateTask();
+        startWeatherUpdateTask();
         super.onStart();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(doesHavePermissions)
-            stopWeatherUpdateTask();
+        stopWeatherUpdateTask();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(doesHavePermissions)
-            stopWeatherUpdateTask();
+        stopWeatherUpdateTask();
     }
 
     //updates weather values while activity is running in foreground with the interval pre definied
@@ -173,9 +171,11 @@ public class MainActivity extends AppCompatActivity {
             try {
                 numberOfCyclesPassed++;
                 getAllCitiesWeatherFromApi();
-                if(numberOfCyclesPassed == locationUpdateInterval){
+                if(numberOfCyclesPassed >= locationUpdateInterval){
                     numberOfCyclesPassed = 0;
-                    updateLocationAndGetItsWeather();
+                    if (!(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                        updateLocationAndGetItsWeather();
+                    }
                 }
             } finally {
                 updateWeatherHandler.postDelayed(weatherUpdateRunnable, updateHandlerInterval);
