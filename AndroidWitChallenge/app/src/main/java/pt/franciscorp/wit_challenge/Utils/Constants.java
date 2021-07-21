@@ -2,6 +2,8 @@ package pt.franciscorp.wit_challenge;
 
 public class Constants {
 
+    public static boolean debugVerbose = true;
+
     public enum UnitsOfMeasure {
         STANDART,
         METRIC,
@@ -22,6 +24,26 @@ public class Constants {
         vienna
     }
 
+    //https://openweathermap.org/weather-conditions
+    public enum WeatherConditions {
+        Thunderstorm,
+        Drizzle,
+        Rain,
+        Snow,
+        Mist,
+        Smoke,
+        Haze,
+//        Dust,//731	Dust	sand/ dust whirls
+        Fog,
+        Sand,
+        Dust,
+        Ash,
+        Squall,
+        Tornado,
+        Clear,
+        Clouds
+    }
+
     //icons from: https://icons8.com/icon/set/weather/color
     public static int[] getWeatherIconsIDS(){
         int images[] = {
@@ -39,5 +61,7 @@ public class Constants {
         };
         return images;
     }
+
+
 
 }
