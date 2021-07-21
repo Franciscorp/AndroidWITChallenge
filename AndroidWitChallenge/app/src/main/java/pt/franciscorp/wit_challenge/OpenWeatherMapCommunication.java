@@ -9,6 +9,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import pt.franciscorp.wit_challenge.Utils.Constants;
+import pt.franciscorp.wit_challenge.Utils.Util;
+
 public class OpenWeatherMapCommunication{
     public String openWeatherApiLink = "https://api.openweathermap.org/data/2.5/weather?";
     public String apiKey = "a6f443d25b2fc78fd00b664f9174bcb5";
