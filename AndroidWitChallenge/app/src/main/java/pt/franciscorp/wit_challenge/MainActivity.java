@@ -22,6 +22,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.Arrays;
+
 import pt.franciscorp.wit_challenge.Communication.OpenWeatherMapCommunication;
 import pt.franciscorp.wit_challenge.Utils.Constants;
 import pt.franciscorp.wit_challenge.Utils.Logger;
@@ -58,8 +60,10 @@ import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getCityWeatherFr
 //17m data passing to activity. Added onStart pause, stop to optimize program
 //60m finished layout with data already included. Round ups need to remove the ".0"
 //25m design listView. Choosing themes and styles
-//43m design improments. Round up corrections. Themes applied. Refactoring. Shadows
+//43m design improvements. Round up corrections. Themes applied. Refactoring. Shadows
 //34m finishing the design of WeatherDataActivity. Themes were applied
+//10m some comments explaining the logic in some function
+//70m debbugging permissions. it's working now
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,11 +71,12 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private Handler updateWeatherHandler;
     private int numberOfCyclesPassed = 0;
+    private boolean doesHavePermissions = false;
     ListView listViewWeatherCities;
     Thread[] connectionToApiThreads;
 
 
-    CityWeather currentLocationCityWeather;
+    private CityWeather currentLocationCityWeather;
     WeatherData weatherData;
     CitiesWeatherListAdapter citiesWeatherListAdapter;
     OpenWeatherMapCommunication weatherCommunication;
@@ -81,24 +86,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        //TODO
         this.setTitle(R.string.app_title);
-//        this.setTitle("");
-        setLayoutForApp();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         //UI START UP
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
 
-        //TODO improve
-        if (!getAppPermissions())
-            return;
-
-        //VARS START UP
-        weatherCommunication = new OpenWeatherMapCommunication();
-        updateWeatherHandler = new Handler();
         weatherData = new WeatherData();
         connectionToApiThreads = new Thread[weatherData.cityWeatherArrayList.size()];
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            },44);
+        }else{
+            setupForOnCreateData();
+        }
+    }
+
+    private void setupForOnCreateData(){
+        doesHavePermissions = true;
+        weatherCommunication = new OpenWeatherMapCommunication();
+        updateWeatherHandler = new Handler();
         setWeatherListView();
 
         listViewWeatherCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -112,30 +128,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 44) {
+            if (Arrays.asList(grantResults).contains(PackageManager.PERMISSION_GRANTED)) {
+                setupForOnCreateData();
+            }
+        }
+    }
+
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        stopWeatherUpdateTask();
+        if(doesHavePermissions)
+            stopWeatherUpdateTask();
     }
 
     @Override
     public void onStart() {
         updateLocationAndGetItsWeather();
-        startWeatherUpdateTask();
+        if(doesHavePermissions)
+            startWeatherUpdateTask();
         super.onStart();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        stopWeatherUpdateTask();
+        if(doesHavePermissions)
+            stopWeatherUpdateTask();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        stopWeatherUpdateTask();
+        if(doesHavePermissions)
+            stopWeatherUpdateTask();
     }
 
+    //updates weather values while activity is running in foreground with the interval pre definied
     Runnable weatherUpdateRunnable = new Runnable() {
         @Override
         public void run() {
@@ -169,13 +200,15 @@ public class MainActivity extends AppCompatActivity {
         //TODO REMOVE THIS VERIFICATION
         //note: this is done already
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            finish();
             return;
         }
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
+                        //location can return null
+                        //because a new thread is receiving the location, only after receiveing the app can get the weather for those lat and long
                         if (location != null) {
                             currentLocationCityWeather = new CityWeather(location.getLatitude(), location.getLongitude());
                             weatherData.cityWeatherArrayList.set(0, currentLocationCityWeather);
@@ -194,32 +227,11 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public boolean getAppPermissions(){
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
-            return false;
-        }
-        return true;
-    }
-
-    private void setLayoutForApp() {
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//        View decorView = getWindow().getDecorView();
-//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
-
+    //loops through the arrayListOfCities that exist. Calls one by one
+    //After calling each one. The thread responsable for calling this function
+    //will wait the pre definied time in constants ( 1s is the recommended calue )
+    //for the thread to join in
+    //when all join, list adapter will be updated
     public void getAllCitiesWeatherFromApi(){
         //thead position starts at 1, because current is 0
         //it is treated within OnSucess response from location
@@ -242,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
         setWeatherListView();
     }
 
+    //single call for a specific city. Each call is saved on a thread attributed for each index of the array
     public void callWeatherApi(int threadPosition ,CityWeather cityWeather) {
         connectionToApiThreads[threadPosition] = new Thread(new Runnable() {
             public void run() {
