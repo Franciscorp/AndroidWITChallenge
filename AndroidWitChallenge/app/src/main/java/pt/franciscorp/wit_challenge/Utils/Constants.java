@@ -5,7 +5,8 @@ import pt.franciscorp.wit_challenge.R;
 public class Constants {
 
     public static boolean debugVerbose = true;
-    public static int threadTimeout = 150;//in ms
+//    public static int threadTimeout = 200;//in ms
+    public static int threadTimeout = 500;//in ms
 
     public enum UnitsOfMeasure {
         STANDART,
@@ -26,11 +27,7 @@ public class Constants {
         London,
         Dublin,
         Prague,
-        Vienna,
-        Vienna1,
-        Vienna2,
-        Vienna3,
-        Vienna4
+        Vienna
     }
 
     //https://openweathermap.org/weather-conditions

@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
 //        getAllCitiesWeatherFromApi();
 
 //        callWeatherApi(weatherData.cityWeatherArrayList.get(0));
-        int resourceImageID = this.getResources().getIdentifier("partly_cloudy_day", "drawable", this.getPackageName());
-        int resourceImageID2 = getApplicationContext().getResources().getIdentifier("partly_cloudy_day", "drawable", this.getPackageName());
         System.out.println();
 
         //form the list
@@ -101,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         citiesWeatherListAdapter = new CitiesWeatherListAdapter(this, R.layout.lv_layout_weather, R.id.tvLayoutWeatherList, weatherData.cityWeatherArrayList);
         listViewWeatherCities.setAdapter(citiesWeatherListAdapter);
     }
-    
+
     private void updateWeatherCitiesData() {
         //TODO REMOVE THIS VERIFICATION
         //note: this is done already
@@ -117,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
                             //current location was based on long and lat
                             currentLocationCityWeather = new CityWeather(location.getLatitude(), location.getLongitude());
                             weatherData.cityWeatherArrayList.set(0, currentLocationCityWeather);
+
+                            callWeatherApi(0, currentLocationCityWeather);
+
+                            try {
+                                connectionToApiThreads[0].join(threadTimeout);
+                            } catch (InterruptedException e) {
+                                //TODO logger
+                                e.printStackTrace();
+                            }
+                            setWeatherListView();
+
                             //TODO many cases won't be able to update the current location before getting the current weather
                             //will only update in the next one
                         }
@@ -152,13 +161,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getAllCitiesWeatherFromApi(){
-        int threadPosition = 0;
-        for(CityWeather city : weatherData.cityWeatherArrayList){
-            callWeatherApi(threadPosition, city);
+        //thead position starts at 1, because current is 0
+        //it is treated within OnSucess response from location
+        int threadPosition = 1;
+        for(int i = threadPosition; i < weatherData.cityWeatherArrayList.size();i++){
+            callWeatherApi(threadPosition, weatherData.cityWeatherArrayList.get(i));
             threadPosition++;
         }
+        //TODO separar maybe
+        threadPosition = 1;
         Thread current;
-        for (int i = 0; i < weatherData.cityWeatherArrayList.size(); i++){
+        for (int i = threadPosition; i < weatherData.cityWeatherArrayList.size(); i++){
             current = connectionToApiThreads[i];
             try {
                 current.join(threadTimeout);
