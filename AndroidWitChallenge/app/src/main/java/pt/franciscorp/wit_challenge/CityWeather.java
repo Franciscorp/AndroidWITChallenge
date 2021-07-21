@@ -6,6 +6,7 @@ public class CityWeather {
     public double latitude;
     public double longitude;
 
+    public int weatherConditionID;
     public String weatherCondition;
     public String weatherTypeDescription;
     //TODO image
@@ -17,9 +18,39 @@ public class CityWeather {
     //TODO debug, apagar
     public String completeJson;
 
+
+    ///
+    //getters
+    ///
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
     ///
     //gets and sets
     ///
+
+
+    public int getWeatherConditionID() {
+        return weatherConditionID;
+    }
+
+    public void setWeatherConditionID(int weatherConditionID) {
+        this.weatherConditionID = weatherConditionID;
+    }
 
     public String getWeatherCondition() {
         return weatherCondition;
