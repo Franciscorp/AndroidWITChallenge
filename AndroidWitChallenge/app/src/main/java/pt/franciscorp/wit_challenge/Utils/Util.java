@@ -12,12 +12,17 @@ public class Util {
     //parser comes from: https://www.spaceotechnologies.com/implement-openweathermap-api-android-app-tutorial/
 
     //TODO tirar a saida do cityweather
-    public static CityWeather getCityWeatherFromJson(CityWeather cityWeather, String json){
+    public static CityWeather getCityWeatherFromJson(int position, CityWeather cityWeather, String json){
         if(isStringEmptyOrNull(json))
             return null;
 
         try {
             JSONObject jsonObject = new JSONObject(json);
+
+            //cityName
+//            JSONObject sysObject = getObject("sys", jsonObject);
+            if(position == 0)
+                cityWeather.setCityName(getString("name", jsonObject));
 
             // weather type
             // We get weather info (This is an array)

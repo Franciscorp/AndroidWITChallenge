@@ -27,9 +27,6 @@ public class CityWeather {
         return countryName;
     }
 
-    public String getCityName() {
-        return cityName;
-    }
 
     public double getLatitude() {
         return latitude;
@@ -43,6 +40,13 @@ public class CityWeather {
     //gets and sets
     ///
 
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
 
     public int getWeatherConditionID() {
         return weatherConditionID;

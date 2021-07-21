@@ -22,6 +22,11 @@ public class OpenWeatherMapCommunication{
     //city iso names
     //https://www.iso.org/obp/ui/#search
 
+    //nearby cities in circle
+//    api.openweathermap.org/data/2.5/find?lat={lat}&lon={lon}&cnt={cnt}&appid={API key}
+    //cnt	optional	Number of cities
+    //note: cnt doesn't make sense to change cause we want the closeste city
+
     //	Units of measurement. standard, metric and imperial units are available. If you do not use the units parameter, standard units will be applied by default. Learn more
 
     //based of: https://www.spaceotechnologies.com/implement-openweathermap-api-android-app-tutorial/
@@ -33,6 +38,7 @@ public class OpenWeatherMapCommunication{
             url = openWeatherApiLink + "q="+ cityWeather.cityName;
         else
             url = openWeatherApiLink + "lat=" + cityWeather.latitude + "&lon=" + cityWeather.longitude;
+//            url = openWeatherApiLink + "lat=" + cityWeather.latitude + "&lon=" + cityWeather.longitude + "&cnt=" + 1;
 
         if (units == null)
             units = Constants.UnitsOfMeasure.METRIC;

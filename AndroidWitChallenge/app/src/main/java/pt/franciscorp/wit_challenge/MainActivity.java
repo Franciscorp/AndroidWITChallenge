@@ -41,6 +41,7 @@ import static pt.franciscorp.wit_challenge.Utils.Constants.threadTimeout;
 //9m compile errors
 //45m list view basic working. no images
 // 60m list view + threads efficiency
+//45m bug fix current location. ListView size adapatable
 
 
 public class MainActivity extends AppCompatActivity {
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO error treatment in case of invalid request
                 //note:won't be done. Not required for challenge
-                Util.getCityWeatherFromJson(cityWeather ,cityWeather.completeJson);
+                Util.getCityWeatherFromJson(threadPosition, cityWeather ,cityWeather.completeJson);
             }
         });
         connectionToApiThreads[threadPosition].start();

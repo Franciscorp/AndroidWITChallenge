@@ -24,7 +24,6 @@ public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
     private List<CityWeather> citiesWeatherList;
     private int resource;
 
-    //    public CitiesWeatherListAdapter(@NonNull Context context, int resource,  List<CityWeather> citiesWeatherList) {
 
     public CitiesWeatherListAdapter(@NonNull Context context, int resource, int tvResource, List<CityWeather> citiesWeatherList) {
         super(context, resource, tvResource, citiesWeatherList);
