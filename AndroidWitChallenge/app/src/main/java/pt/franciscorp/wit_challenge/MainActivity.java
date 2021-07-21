@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewWeatherInfo;
     ListView listViewWeatherCities;
     //TODO number
-    Thread[] connectionToApiThreads = new Thread[10];
+    Thread[] connectionToApiThreads;
 
     CityWeather currentLocationCityWeather;
     WeatherData weatherData;
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
 
         weatherData = new WeatherData();
+        connectionToApiThreads = new Thread[weatherData.cityWeatherArrayList.size()];
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
         setWeatherListView();
 
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Thread current;
         //TODO number
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < weatherData.cityWeatherArrayList.size(); i++){
             current = connectionToApiThreads[i];
             try {
                 current.join();

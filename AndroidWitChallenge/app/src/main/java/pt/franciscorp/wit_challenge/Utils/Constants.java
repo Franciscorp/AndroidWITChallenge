@@ -14,6 +14,7 @@ public class Constants {
 
     //to add more cities to retrieve from api
     //add here
+    //note: Current must be always the first case
     public enum Cities {
         Current,
         Lisbon,
@@ -24,7 +25,11 @@ public class Constants {
         London,
         Dublin,
         Prague,
-        Vienna
+        Vienna,
+        Vienna1,
+        Vienna2,
+        Vienna3,
+        Vienna4
     }
 
     //https://openweathermap.org/weather-conditions

@@ -56,7 +56,10 @@ public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
         tvCityName.setText(cityName);
 
         int resourceImageID = context.getResources().getIdentifier( weatherIcon, "drawable", context.getPackageName());
-        ivWeatherIcon.setImageResource(resourceImageID);
+        if(resourceImageID == 0)
+            ivWeatherIcon.setImageDrawable( context.getResources().getDrawable(R.drawable.partly_cloudy_day));
+        else
+            ivWeatherIcon.setImageResource(resourceImageID);
 
         return super.getView(position, convertView, parent);
     }
