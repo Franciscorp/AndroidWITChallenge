@@ -1,6 +1,8 @@
 package pt.franciscorp.wit_challenge;
 
-public class CityWeather {
+import java.io.Serializable;
+
+public class CityWeather implements Serializable {
     public String countryName;
     public String cityName;
     public double latitude;

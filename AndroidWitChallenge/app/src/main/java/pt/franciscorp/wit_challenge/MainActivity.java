@@ -50,6 +50,8 @@ import static pt.franciscorp.wit_challenge.Utils.Constants.updateHandlerInterval
 //30m show current location city name
 //30m updateInterval for app. Plus Optimizations
 //20m tests of update optimization
+//35m setting up new activity, passing data and organizing layout
+//17m data passing to activity. Added onStart pause, stop to optimize program
 
 
 public class MainActivity extends AppCompatActivity {
@@ -91,24 +93,38 @@ public class MainActivity extends AppCompatActivity {
         connectionToApiThreads = new Thread[weatherData.cityWeatherArrayList.size()];
         setWeatherListView();
 
-        updateLocationAndGetItsWeather();
-        startWeatherUpdateTask();
-
         listViewWeatherCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent myIntent = new Intent(this, CityWeatherActivity.class);
-//                weatherData.cityWeatherArrayList
-//                myIntent.putExtra("CityWeather", (CityWeather)weatherData.cityWeatherArrayList.get(position));
-                getApplication().startActivity(myIntent);
+                Intent myIntent = new Intent(MainActivity.this, CityWeatherActivity.class);
+                myIntent.putExtra("CityWeather", (CityWeather)weatherData.cityWeatherArrayList.get(position));
+                startActivity(myIntent);
             }
-
         });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopWeatherUpdateTask();
+    }
+
+    @Override
+    public void onStart() {
+        updateLocationAndGetItsWeather();
+        startWeatherUpdateTask();
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopWeatherUpdateTask();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         stopWeatherUpdateTask();
     }
 
@@ -212,9 +228,8 @@ public class MainActivity extends AppCompatActivity {
             current = connectionToApiThreads[i];
             try {
                 current.join(threadTimeout);
-            } catch (InterruptedException e) {
-                //TODO logger
-                e.printStackTrace();
+            } catch (InterruptedException exception) {
+                Logger.crashLog("MainActivity", "weatherAPI: An error occured while waiting for Weather Threads from API.", exception);
             }
         }
         setWeatherListView();
