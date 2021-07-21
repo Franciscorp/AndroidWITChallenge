@@ -12,4 +12,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+
+    <color name="BlackLetter">#000000</color>
+    <color name="BlueWord">#4472c4</color>
+    <color name="AndroidGray">#d3d3d3</color>
+
+
 </resources>
