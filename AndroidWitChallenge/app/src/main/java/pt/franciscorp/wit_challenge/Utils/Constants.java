@@ -5,7 +5,12 @@ import pt.franciscorp.wit_challenge.R;
 public class Constants {
 
     public static boolean debugVerbose = true;
-//    public static int threadTimeout = 200;//in ms
+    public static int numberOfDecimalCases = 0;
+    public static int temperatureDecimalCases = 0;//metric case
+
+
+
+    //    public static int threadTimeout = 200;//in ms
 //    public static int threadTimeout = 500;//in ms
     public static int threadTimeout = 1000;//in ms
 //    public static int updateHandlerInterval = 60000;//1 minute in ms
@@ -87,7 +92,8 @@ public class Constants {
                 R.drawable.rainfall,
                 R.drawable.partly_cloudy_day,
                 R.drawable.heavy_clouds,
-                R.drawable.dust
+                R.drawable.dust,
+                R.drawable.humidity
         };
         return images;
     }

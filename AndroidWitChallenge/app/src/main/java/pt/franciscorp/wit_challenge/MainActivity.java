@@ -45,13 +45,14 @@ import static pt.franciscorp.wit_challenge.Utils.Constants.updateHandlerInterval
 //60m em list adapter, images and parsing of images
 //9m compile errors
 //45m list view basic working. no images
-// 60m list view + threads efficiency
+//60m list view + threads efficiency
 //45m bug fix current location. ListView size adapatable
 //30m show current location city name
 //30m updateInterval for app. Plus Optimizations
 //20m tests of update optimization
 //35m setting up new activity, passing data and organizing layout
 //17m data passing to activity. Added onStart pause, stop to optimize program
+//60m finished layout with data already included. Round ups need to remove the ".0"
 
 
 public class MainActivity extends AppCompatActivity {

@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import pt.franciscorp.wit_challenge.CityWeather;
 import pt.franciscorp.wit_challenge.R;
 
@@ -91,6 +94,24 @@ public class Util {
                 weatherConditionImage = Constants.WeatherConditionImage.partly_cloudly_day.name();
         }
         return weatherConditionImage;
+    }
+
+    //https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP );
+        return bd.doubleValue();
+    }
+
+    public static double round(double value) {
+        int places = 0;
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP );
+        return bd.doubleValue();
     }
 
     public static boolean isStringEmptyOrNull(String str){
