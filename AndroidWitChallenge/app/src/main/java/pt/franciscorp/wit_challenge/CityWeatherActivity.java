@@ -14,10 +14,15 @@ public class CityWeatherActivity extends AppCompatActivity {
     private TextView tvCwaWeatherCondition;
     private TextView tvCwaMinMaxTemp;
 
+    private CityWeather cityWeather;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_weather);
+        setupViewsFromIDS();
+        cityWeather = (CityWeather)getIntent().getSerializableExtra("CityWeather");
+        tvCwaCityName.setText(cityWeather.getCityName());
     }
 
 
