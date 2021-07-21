@@ -1,8 +1,11 @@
-package pt.franciscorp.wit_challenge;
+package pt.franciscorp.wit_challenge.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pt.franciscorp.wit_challenge.CityWeather;
+import pt.franciscorp.wit_challenge.R;
 
 public class Util {
 
@@ -21,9 +24,9 @@ public class Util {
             JSONArray jsonArray = jsonObject.getJSONArray("weather");
             if(jsonArray.length() > 0){
                 JSONObject JSONWeather = jsonArray.getJSONObject(0);
+                cityWeather.setWeatherConditionID(getInt("id", JSONWeather));
                 cityWeather.setWeatherCondition(getString("main", JSONWeather));
                 cityWeather.setWeatherTypeDescription(getString("description", JSONWeather));
-//                weather.currentCondition.setWeatherId(getInt("id", JSONWeather));
 //                weather.currentCondition.setIcon(getString("icon", JSONWeather));
             }
 
@@ -39,12 +42,48 @@ public class Util {
             JSONObject windObject = getObject("wind", jsonObject);
             cityWeather.setWindSpeed(getFloat("speed", windObject));
 
-        } catch (JSONException e) {
-            //TODO tratar
-            e.printStackTrace();
+        } catch (JSONException jsonException) {
+            Logger.crashLog("WeatherUtils", "An error occured while parsing Json from API to Weather Object.", jsonException);
         }
 
         return cityWeather;
+    }
+
+    public static String getImageNameFromWeatherConditionID(int weatherID){
+        int rest = weatherID % 100;
+        String weatherConditionImage;
+        int weatherConditionGroup = weatherID - rest;
+
+        switch(weatherConditionGroup) {
+            case 200:
+                weatherConditionImage = Constants.WeatherConditionImage.cloud_lightning.name();
+                break;
+            case 300:
+                weatherConditionImage = Constants.WeatherConditionImage.moderate_rain.name();
+                break;
+            case 500:
+                weatherConditionImage = Constants.WeatherConditionImage.heavy_rain.name();
+                break;
+            case 600:
+                weatherConditionImage = Constants.WeatherConditionImage.snow.name();
+                break;
+            case 700:
+                weatherConditionImage = Constants.WeatherConditionImage.dust.name();
+                break;
+            case 800:
+                if(rest == 0)
+                    weatherConditionImage = Constants.WeatherConditionImage.sun.name();
+                else if(rest == 1 || rest == 2)
+                    weatherConditionImage = Constants.WeatherConditionImage.partly_cloudly_day.name();
+                else
+                    weatherConditionImage = Constants.WeatherConditionImage.heavy_clouds.name();
+                break;
+            default:
+                //it's not supposed to get here
+                Logger.log("Weather","Weather Condition Group identified as Default. Valid group was not found.");
+                weatherConditionImage = Constants.WeatherConditionImage.partly_cloudly_day.name();
+        }
+        return weatherConditionImage;
     }
 
     public static boolean isStringEmptyOrNull(String str){
