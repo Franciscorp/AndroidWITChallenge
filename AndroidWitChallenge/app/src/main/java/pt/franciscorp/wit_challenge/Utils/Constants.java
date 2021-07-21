@@ -5,6 +5,7 @@ import pt.franciscorp.wit_challenge.R;
 public class Constants {
 
     public static boolean debugVerbose = true;
+    public static int threadTimeout = 150;//in ms
 
     public enum UnitsOfMeasure {
         STANDART,

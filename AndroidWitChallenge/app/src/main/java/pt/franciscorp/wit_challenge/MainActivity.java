@@ -23,6 +23,8 @@ import java.util.List;
 import pt.franciscorp.wit_challenge.Utils.Constants;
 import pt.franciscorp.wit_challenge.Utils.Util;
 
+import static pt.franciscorp.wit_challenge.Utils.Constants.threadTimeout;
+
 
 //15m planning on paper. 1 class. 2 basic drawing of UI
 //35 of setting up the first request. Not tested
@@ -99,23 +101,7 @@ public class MainActivity extends AppCompatActivity {
         citiesWeatherListAdapter = new CitiesWeatherListAdapter(this, R.layout.lv_layout_weather, R.id.tvLayoutWeatherList, weatherData.cityWeatherArrayList);
         listViewWeatherCities.setAdapter(citiesWeatherListAdapter);
     }
-
-    private void fillWeatherListWith10Elements() {
-        if (weatherData.cityWeatherArrayList.size() < 1 || weatherData.cityWeatherArrayList.size() > 10)
-            return;
-        CityWeather city = weatherData.cityWeatherArrayList.get(0);
-
-        int i = weatherData.cityWeatherArrayList.size();
-        while (i < 10) {
-            weatherData.cityWeatherArrayList.add(city);
-            i++;
-        }
-    }
-
-    private void setupWeatherCitiesData() {
-
-    }
-
+    
     private void updateWeatherCitiesData() {
         //TODO REMOVE THIS VERIFICATION
         //note: this is done already
@@ -172,18 +158,16 @@ public class MainActivity extends AppCompatActivity {
             threadPosition++;
         }
         Thread current;
-        //TODO number
         for (int i = 0; i < weatherData.cityWeatherArrayList.size(); i++){
             current = connectionToApiThreads[i];
             try {
-                current.join();
+                current.join(threadTimeout);
             } catch (InterruptedException e) {
                 //TODO logger
                 e.printStackTrace();
             }
         }
-
-//        setWeatherListView();
+        setWeatherListView();
     }
 
     public void callWeatherApi(int threadPosition ,CityWeather cityWeather) {
