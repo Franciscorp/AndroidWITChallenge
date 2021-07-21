@@ -55,7 +55,7 @@ public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
         tvCityTemperature.setText(simplifiedCityTemperature + "º");
         tvCityName.setText(cityName);
 
-        int resourceImageID = context.getResources().getIdentifier( weatherIcon, "drawable", "pt.franciscorp.wit_challenge");
+        int resourceImageID = context.getResources().getIdentifier( weatherIcon, "drawable", context.getPackageName());
         ivWeatherIcon.setImageResource(resourceImageID);
 
         return super.getView(position, convertView, parent);
