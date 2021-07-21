@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         weatherCommunication = new OpenWeatherMapCommunication();
         updateWeatherHandler = new Handler();
 
-//        updateWeatherCitiesData();
         updateLocationAndGetItsWeather();
         startWeatherUpdateTask();
 
@@ -115,14 +114,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                MainActivity.this.setTitle(numberOfCyclesPassed + "");
                 numberOfCyclesPassed++;
                 getAllCitiesWeatherFromApi();
-//                updateWeatherCitiesData();
                 if(numberOfCyclesPassed == locationUpdateInterval){
-                    MainActivity.this.setTitle(numberOfCyclesPassed + "Update");
                     numberOfCyclesPassed = 0;
-//                    updateWeatherCitiesData();
                     updateLocationAndGetItsWeather();
                 }
             } finally {
@@ -143,11 +138,6 @@ public class MainActivity extends AppCompatActivity {
     public void setWeatherListView() {
         citiesWeatherListAdapter = new CitiesWeatherListAdapter(this, R.layout.lv_layout_weather, R.id.tvLayoutWeatherList, weatherData.cityWeatherArrayList);
         listViewWeatherCities.setAdapter(citiesWeatherListAdapter);
-    }
-
-    private void updateWeatherCitiesData() {
-        updateLocationAndGetItsWeather();
-        getAllCitiesWeatherFromApi();
     }
 
     private void updateLocationAndGetItsWeather(){
