@@ -1,4 +1,6 @@
-package pt.franciscorp.wit_challenge;
+package pt.franciscorp.wit_challenge.Utils;
+
+import pt.franciscorp.wit_challenge.R;
 
 public class Constants {
 
@@ -44,6 +46,21 @@ public class Constants {
         Clouds
     }
 
+    public enum WeatherConditionImage {
+        cloud,
+        cloud_lightning,
+        sun,
+        wind,
+        light_snow,
+        snow,
+        heavy_rain,
+        moderate_rain,
+        rainfall,
+        partly_cloudly_day,
+        heavy_clouds,
+        dust
+    }
+
     //icons from: https://icons8.com/icon/set/weather/color
     public static int[] getWeatherIconsIDS(){
         int images[] = {
@@ -57,7 +74,9 @@ public class Constants {
                 R.drawable.heavy_rain,
                 R.drawable.moderate_rain,
                 R.drawable.rainfall,
-                R.drawable.partly_cloudy_day
+                R.drawable.partly_cloudy_day,
+                R.drawable.heavy_clouds,
+                R.drawable.dust
         };
         return images;
     }

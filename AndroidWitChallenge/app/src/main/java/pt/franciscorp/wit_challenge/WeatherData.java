@@ -2,6 +2,8 @@ package pt.franciscorp.wit_challenge;
 
 import java.util.ArrayList;
 
+import pt.franciscorp.wit_challenge.Utils.Constants;
+
 public class WeatherData {
     public ArrayList<CityWeather> cityWeatherArrayList;
 
