@@ -9,22 +9,26 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import pt.franciscorp.wit_challenge.Utils.Constants;
+import pt.franciscorp.wit_challenge.Utils.Util;
+
 public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
     TextView textViewWeatherInfo;
+    ListView listViewWeatherCities;
 
     WeatherData weatherData;
+    CitiesWeatherListAdapter citiesWeatherListAdapter;
     OpenWeatherMapCommunication weatherCommunication;
 
 
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         this.setTitle("");
         setLayoutForApp();
 
+
+
         //15m planning on paper. 1 class. 2 basic drawing of UI
         //35 of setting up the first request. Not tested
         //47 minutes, UI is updated
@@ -45,10 +51,22 @@ public class MainActivity extends AppCompatActivity {
         //60m for current location
         //20m change the theme, apply dark theme, title and others
         //43m lv, how it works, design changes
-        //icons + debug full list
+        //30m icons + debug full list
+        //40m list adapter so far
+        //60m em list adapter, images and parsing of images
+        //9m compile errors
+        //45m list view basic working. no images
 
         //UI START UP
         textViewWeatherInfo = findViewById(R.id.TextViewWeatherInfo);
+        listViewWeatherCities = findViewById(R.id.lvWeatherCities);
+
+        weatherData = new WeatherData();
+        listViewWeatherCities = findViewById(R.id.lvWeatherCities);
+        citiesWeatherListAdapter = new CitiesWeatherListAdapter(MainActivity.this, R.layout.lv_layout_weather,R.id.tvLayoutWeatherList, weatherData.cityWeatherArrayList);
+        listViewWeatherCities.setAdapter(citiesWeatherListAdapter);
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
@@ -67,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                             //current location was based on long and lat
                             CityWeather cityWeather = new CityWeather(location.getLatitude(), location.getLongitude());
                             callWeatherApi(cityWeather);
+                            weatherData.cityWeatherArrayList.add(cityWeather);
+                            fillWeatherListWith10Elements();
+                            citiesWeatherListAdapter = new CitiesWeatherListAdapter(MainActivity.this, R.layout.lv_layout_weather,R.id.tvLayoutWeatherList, weatherData.cityWeatherArrayList);
                             System.out.println();
 
                             // Logic to handle location object
@@ -82,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        callWeatherApi(weatherData.cityWeatherArrayList.get(0));
         System.out.println();
+
+        //form the list
+
+
     }
 
     private void fillWeatherListWith10Elements(){
