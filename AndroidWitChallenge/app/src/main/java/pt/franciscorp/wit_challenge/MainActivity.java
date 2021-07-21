@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
@@ -18,12 +19,12 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.util.List;
-
 import pt.franciscorp.wit_challenge.Utils.Constants;
 import pt.franciscorp.wit_challenge.Utils.Util;
 
+import static pt.franciscorp.wit_challenge.Utils.Constants.locationUpdateInterval;
 import static pt.franciscorp.wit_challenge.Utils.Constants.threadTimeout;
+import static pt.franciscorp.wit_challenge.Utils.Constants.updateHandlerInterval;
 
 
 //15m planning on paper. 1 class. 2 basic drawing of UI
@@ -42,15 +43,20 @@ import static pt.franciscorp.wit_challenge.Utils.Constants.threadTimeout;
 //45m list view basic working. no images
 // 60m list view + threads efficiency
 //45m bug fix current location. ListView size adapatable
+//30m show current location city name
+//30m updateInterval for app. Plus Optimizations
+//20m tests of update optimization
 
 
 public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
+    private Handler updateWeatherHandler;
+    private int numberOfCyclesPassed = 0;
     TextView textViewWeatherInfo;
     ListView listViewWeatherCities;
-    //TODO number
     Thread[] connectionToApiThreads;
+
 
     CityWeather currentLocationCityWeather;
     WeatherData weatherData;
@@ -83,8 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
         //VARS START UP
         weatherCommunication = new OpenWeatherMapCommunication();
+        updateWeatherHandler = new Handler();
 
-        updateWeatherCitiesData();
+//        updateWeatherCitiesData();
+        updateLocationAndGetItsWeather();
+        startWeatherUpdateTask();
 
 //        getAllCitiesWeatherFromApi();
 
@@ -96,12 +105,52 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopWeatherUpdateTask();
+    }
+
+    Runnable weatherUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                MainActivity.this.setTitle(numberOfCyclesPassed + "");
+                numberOfCyclesPassed++;
+                getAllCitiesWeatherFromApi();
+//                updateWeatherCitiesData();
+                if(numberOfCyclesPassed == locationUpdateInterval){
+                    MainActivity.this.setTitle(numberOfCyclesPassed + "Update");
+                    numberOfCyclesPassed = 0;
+//                    updateWeatherCitiesData();
+                    updateLocationAndGetItsWeather();
+                }
+            } finally {
+                updateWeatherHandler.postDelayed(weatherUpdateRunnable, updateHandlerInterval);
+            }
+        }
+    };
+
+    void startWeatherUpdateTask() {
+        weatherUpdateRunnable.run();
+    }
+
+    //TODO ver callbacks
+    void stopWeatherUpdateTask() {
+        updateWeatherHandler.removeCallbacks(weatherUpdateRunnable);
+    }
+
     public void setWeatherListView() {
         citiesWeatherListAdapter = new CitiesWeatherListAdapter(this, R.layout.lv_layout_weather, R.id.tvLayoutWeatherList, weatherData.cityWeatherArrayList);
         listViewWeatherCities.setAdapter(citiesWeatherListAdapter);
     }
 
     private void updateWeatherCitiesData() {
+        updateLocationAndGetItsWeather();
+        getAllCitiesWeatherFromApi();
+    }
+
+    private void updateLocationAndGetItsWeather(){
         //TODO REMOVE THIS VERIFICATION
         //note: this is done already
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -132,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-        getAllCitiesWeatherFromApi();
     }
 
     public boolean getAppPermissions(){

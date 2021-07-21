@@ -35,6 +35,8 @@ public class Util {
 //                weather.currentCondition.setIcon(getString("icon", JSONWeather));
             }
 
+            Logger.log("WeatherUtils", cityWeather.cityName + ": " + cityWeather.weatherCondition + " - " + cityWeather.weatherConditionID);
+
             JSONObject mainObject = getObject("main", jsonObject);
             cityWeather.setHumidity(getInt("humidity", mainObject));
             //TODO pressure
