@@ -17,16 +17,14 @@ public class WeatherUtils {
 
     //parser comes from: https://www.spaceotechnologies.com/implement-openweathermap-api-android-app-tutorial/
 
-    //TODO tirar a saida do cityweather
-    public static CityWeather getCityWeatherFromJson(int position, CityWeather cityWeather, String json){
+    public static boolean getCityWeatherFromJson(int position, CityWeather cityWeather, String json){
         if(isStringEmptyOrNull(json))
-            return null;
+            return false;
 
         try {
             JSONObject jsonObject = new JSONObject(json);
 
             //cityName
-//            JSONObject sysObject = getObject("sys", jsonObject);
             if(position == 0)
                 cityWeather.setCityName(getString("name", jsonObject));
 
@@ -38,15 +36,13 @@ public class WeatherUtils {
                 cityWeather.setWeatherConditionID(getInt("id", JSONWeather));
                 cityWeather.setWeatherCondition(getString("main", JSONWeather));
                 cityWeather.setWeatherTypeDescription(getString("description", JSONWeather));
-//                weather.currentCondition.setIcon(getString("icon", JSONWeather));
             }
 
             Logger.log("WeatherUtils", cityWeather.cityName + ": " + cityWeather.weatherCondition + " - " + cityWeather.weatherConditionID);
 
             JSONObject mainObject = getObject("main", jsonObject);
             cityWeather.setHumidity(getInt("humidity", mainObject));
-            //TODO pressure
-//            cityWeather.currentCondition.setPressure(getInt("pressure", mainObj));
+
             cityWeather.setMaxTemperature(getFloat("temp_max", mainObject));
             cityWeather.setMinTemperature(getFloat("temp_min", mainObject));
             cityWeather.setCurrentTemperature(getFloat("temp", mainObject));
@@ -59,7 +55,7 @@ public class WeatherUtils {
             Logger.crashLog("WeatherUtils", "An error occured while parsing Json from API to Weather Object.", jsonException);
         }
 
-        return cityWeather;
+        return true;
     }
 
     public static String getImageNameFromWeatherConditionID(int weatherID){

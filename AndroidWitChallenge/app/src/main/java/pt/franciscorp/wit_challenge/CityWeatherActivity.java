@@ -11,9 +11,7 @@ import java.util.Calendar;
 
 import pt.franciscorp.wit_challenge.Weather.CityWeather;
 
-import static pt.franciscorp.wit_challenge.Utils.Constants.temperatureDecimalCases;
 import static pt.franciscorp.wit_challenge.Utils.Util.getRoundInString;
-import static pt.franciscorp.wit_challenge.Utils.Util.round;
 import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getImageNameFromWeatherConditionID;
 
 public class CityWeatherActivity extends AppCompatActivity {
@@ -34,7 +32,6 @@ public class CityWeatherActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_city_weather);
         this.setTitle(R.string.app_title);
-//        this.setTitle("");
 
         setupViewsFromIDS();
         cityWeather = (CityWeather)getIntent().getSerializableExtra("CityWeather");

@@ -197,10 +197,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateLocationAndGetItsWeather(){
-        //TODO REMOVE THIS VERIFICATION
-        //note: this is done already
+        //if there is no permission for the location. it won't get the current location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            finish();
             return;
         }
         fusedLocationClient.getLastLocation()
@@ -263,7 +261,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO error treatment in case of invalid request
                 //note:won't be done. Not required for challenge
-                getCityWeatherFromJson(threadPosition, cityWeather , completeJson);
+                if(!getCityWeatherFromJson(threadPosition, cityWeather , completeJson)){
+                    Logger.log("CallWeatherApi", "An error occured while parsing Json from API to Weather Object. Json was null.");
+                }
             }
         });
         connectionToApiThreads[threadPosition].start();

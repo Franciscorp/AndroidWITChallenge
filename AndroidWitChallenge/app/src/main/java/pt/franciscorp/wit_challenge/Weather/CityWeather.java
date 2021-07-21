@@ -11,14 +11,12 @@ public class CityWeather implements Serializable {
     public int weatherConditionID;
     public String weatherCondition;
     public String weatherTypeDescription;
-    //TODO image
+
     public double maxTemperature;
     public double minTemperature;
     public double currentTemperature;
     public double windSpeed;
     public double humidity;
-    //TODO debug, apagar
-    public String completeJson;
 
 
     ///
@@ -112,17 +110,6 @@ public class CityWeather implements Serializable {
 
     public void setHumidity(double humidity) {
         this.humidity = humidity;
-    }
-
-
-
-
-    public String getCompleteJson() {
-        return completeJson;
-    }
-
-    public void setCompleteJson(String completeJson) {
-        this.completeJson = completeJson;
     }
 
     ///

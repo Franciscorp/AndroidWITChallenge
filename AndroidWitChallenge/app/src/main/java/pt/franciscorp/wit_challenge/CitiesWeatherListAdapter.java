@@ -23,7 +23,6 @@ import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getImageNameFrom
 public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
 
     private Context context;
-    private CityWeather cityWeather;
     private List<CityWeather> citiesWeatherList;
     private int resource;
 

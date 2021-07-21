@@ -1,13 +1,10 @@
 package pt.franciscorp.wit_challenge.Utils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-import pt.franciscorp.wit_challenge.Weather.CityWeather;
 
 import static pt.franciscorp.wit_challenge.Utils.Constants.numberOfDecimalCases;
 

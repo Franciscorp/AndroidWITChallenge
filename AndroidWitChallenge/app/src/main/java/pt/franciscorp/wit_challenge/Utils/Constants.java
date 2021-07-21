@@ -10,12 +10,13 @@ public class Constants {
 
 
 
-    //    public static int threadTimeout = 200;//in ms
+//    public static int threadTimeout = 200;//in ms
 //    public static int threadTimeout = 500;//in ms
     public static int threadTimeout = 1000;//in ms
-//    public static int updateHandlerInterval = 60000;//1 minute in ms
+//    public static int updateHandlerInterval = 120000;//2 minute in ms
+    public static int updateHandlerInterval = 60000;//1 minute in ms
 //    public static int updateHandlerInterval = 25000;//25sec in ms
-    public static int updateHandlerInterval = 5000;//5sec in ms
+//    public static int updateHandlerInterval = 5000;//5sec in ms
 
     public static int locationUpdateInterval = 5;//in cycles based of updateHandlerInterval
 
@@ -97,7 +98,5 @@ public class Constants {
         };
         return images;
     }
-
-
 
 }
