@@ -22,13 +22,17 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import pt.franciscorp.wit_challenge.Communication.OpenWeatherMapCommunication;
 import pt.franciscorp.wit_challenge.Utils.Constants;
 import pt.franciscorp.wit_challenge.Utils.Logger;
 import pt.franciscorp.wit_challenge.Utils.Util;
+import pt.franciscorp.wit_challenge.Weather.CityWeather;
+import pt.franciscorp.wit_challenge.Weather.WeatherData;
 
 import static pt.franciscorp.wit_challenge.Utils.Constants.locationUpdateInterval;
 import static pt.franciscorp.wit_challenge.Utils.Constants.threadTimeout;
 import static pt.franciscorp.wit_challenge.Utils.Constants.updateHandlerInterval;
+import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getCityWeatherFromJson;
 
 
 //15m planning on paper. 1 class. 2 basic drawing of UI
@@ -53,6 +57,8 @@ import static pt.franciscorp.wit_challenge.Utils.Constants.updateHandlerInterval
 //35m setting up new activity, passing data and organizing layout
 //17m data passing to activity. Added onStart pause, stop to optimize program
 //60m finished layout with data already included. Round ups need to remove the ".0"
+//25m design listView. Choosing themes and styles
+//43m design improments. Round up corrections. Themes applied. Refactoring. Shadows
 
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private Handler updateWeatherHandler;
     private int numberOfCyclesPassed = 0;
-    TextView textViewWeatherInfo;
     ListView listViewWeatherCities;
     Thread[] connectionToApiThreads;
 
@@ -75,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        //TODO
+        this.setTitle(R.string.app_title);
         this.setTitle("");
         setLayoutForApp();
 
         //UI START UP
-        textViewWeatherInfo = findViewById(R.id.TextViewWeatherInfo);
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
 
@@ -149,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
         weatherUpdateRunnable.run();
     }
 
-    //TODO see callbacks theory
     void stopWeatherUpdateTask() {
         updateWeatherHandler.removeCallbacks(weatherUpdateRunnable);
     }
@@ -222,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
             callWeatherApi(threadPosition, weatherData.cityWeatherArrayList.get(i));
             threadPosition++;
         }
-        //TODO separar maybe
+
         threadPosition = 1;
         Thread current;
         for (int i = threadPosition; i < weatherData.cityWeatherArrayList.size(); i++){
@@ -239,12 +244,12 @@ public class MainActivity extends AppCompatActivity {
     public void callWeatherApi(int threadPosition ,CityWeather cityWeather) {
         connectionToApiThreads[threadPosition] = new Thread(new Runnable() {
             public void run() {
-                cityWeather.completeJson = weatherCommunication.getWeatherData(cityWeather, null, Constants.UnitsOfMeasure.METRIC);
-                //note: this process will asumme the threads would terminate connection after some time ( 100ms )
+                String completeJson = weatherCommunication.getWeatherData(cityWeather, null, Constants.UnitsOfMeasure.METRIC);
+                //note: this process will asumme the threads would terminate connection after some time ( 1000ms )
 
                 //TODO error treatment in case of invalid request
                 //note:won't be done. Not required for challenge
-                Util.getCityWeatherFromJson(threadPosition, cityWeather ,cityWeather.completeJson);
+                getCityWeatherFromJson(threadPosition, cityWeather , completeJson);
             }
         });
         connectionToApiThreads[threadPosition].start();

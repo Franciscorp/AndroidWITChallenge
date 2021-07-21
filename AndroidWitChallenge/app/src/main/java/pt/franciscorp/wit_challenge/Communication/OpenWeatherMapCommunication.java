@@ -1,4 +1,4 @@
-package pt.franciscorp.wit_challenge;
+package pt.franciscorp.wit_challenge.Communication;
 
 import android.util.Log;
 
@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import pt.franciscorp.wit_challenge.Weather.CityWeather;
 import pt.franciscorp.wit_challenge.Utils.Constants;
 import pt.franciscorp.wit_challenge.Utils.Util;
 

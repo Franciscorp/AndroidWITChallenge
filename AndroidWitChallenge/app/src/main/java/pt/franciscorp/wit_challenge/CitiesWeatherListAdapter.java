@@ -14,8 +14,11 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import pt.franciscorp.wit_challenge.Utils.Logger;
+import pt.franciscorp.wit_challenge.Weather.CityWeather;
 
-import static pt.franciscorp.wit_challenge.Utils.Util.getImageNameFromWeatherConditionID;
+import static pt.franciscorp.wit_challenge.Utils.Util.getRoundInString;
+import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getImageNameFromWeatherConditionID;
+
 
 public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
 
@@ -36,7 +39,7 @@ public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
     public View getView(int position, View convertView, ViewGroup parent) {
         String cityName = getItem(position).getCityName();
         double cityTemperature = getItem(position).getCurrentTemperature();
-        int simplifiedCityTemperature = ((int) cityTemperature);
+        String simplifiedCityTemperature = getRoundInString(cityTemperature) +"ºC";
         int weatherConditionID = getItem(position).getWeatherConditionID();
         String weatherIcon = getImageNameFromWeatherConditionID(weatherConditionID);
         Logger.log("WeatherList", "WeatherConditionIcon: " + weatherIcon );
@@ -51,7 +54,7 @@ public class CitiesWeatherListAdapter extends ArrayAdapter<CityWeather> {
         ImageView ivWeatherIcon = (ImageView) convertView.findViewById(R.id.ivWeatherIcon);
 
         //set data
-        tvCityTemperature.setText(simplifiedCityTemperature + "º");
+        tvCityTemperature.setText(simplifiedCityTemperature);
         tvCityName.setText(cityName);
 
         int resourceImageID = context.getResources().getIdentifier( weatherIcon, "drawable", context.getPackageName());

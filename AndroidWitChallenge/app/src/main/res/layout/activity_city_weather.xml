@@ -64,7 +64,6 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:textSize="80sp"
-            android:text="| 22º"
             android:layout_weight="0.5">
         </TextView>
 
@@ -74,7 +73,7 @@
     <TextView
         android:id="@+id/tvCwaWeatherCondition"
         android:layout_width="wrap_content"
-        style="?android:attr/textAppearanceMedium"
+        style="@style/NormalTextWeatherActivity"
         android:layout_height="wrap_content"
         android:layout_below="@id/llCwaIconTemp"
         android:layout_centerHorizontal="true"
@@ -85,10 +84,9 @@
         android:id="@+id/tvCwaMinMaxTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/textAppearanceMedium"
+        style="@style/NormalTextWeatherActivity"
         android:layout_below="@id/tvCwaWeatherCondition"
         android:layout_centerHorizontal="true"
-
         >
     </TextView>
 
@@ -117,7 +115,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="22º"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            style="@style/NormalTextWeatherActivity">
         </TextView>
 
     </LinearLayout>
@@ -147,7 +146,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="22º"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            style="@style/NormalTextWeatherActivity">
         </TextView>
 
     </LinearLayout>

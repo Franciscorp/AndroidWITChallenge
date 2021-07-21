@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidWitChallenge"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CityWeatherActivity"></activity>
+        <activity
+            android:name=".CityWeatherActivity"
+            android:theme="@style/AppTheme">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">

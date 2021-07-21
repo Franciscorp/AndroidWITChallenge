@@ -3,15 +3,18 @@ package pt.franciscorp.wit_challenge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
 
-import static pt.franciscorp.wit_challenge.Utils.Constants.numberOfDecimalCases;
+import pt.franciscorp.wit_challenge.Weather.CityWeather;
+
 import static pt.franciscorp.wit_challenge.Utils.Constants.temperatureDecimalCases;
-import static pt.franciscorp.wit_challenge.Utils.Util.getImageNameFromWeatherConditionID;
+import static pt.franciscorp.wit_challenge.Utils.Util.getRoundInString;
 import static pt.franciscorp.wit_challenge.Utils.Util.round;
+import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getImageNameFromWeatherConditionID;
 
 public class CityWeatherActivity extends AppCompatActivity {
     private TextView tvCwaCityName;
@@ -32,7 +35,10 @@ public class CityWeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_city_weather);
+        this.setTitle("");
+
         setupViewsFromIDS();
         cityWeather = (CityWeather)getIntent().getSerializableExtra("CityWeather");
         setupLayoutWithData();
@@ -53,11 +59,13 @@ public class CityWeatherActivity extends AppCompatActivity {
     private void setupLayoutWithData(){
         tvCwaCityName.setText(cityWeather.getCityName());
         tvCwaDate.setText(Calendar.getInstance().getTime().toString());
-        tvCwaCurrentTemperature.setText(round(cityWeather.getCurrentTemperature(), temperatureDecimalCases) + "º");
+        tvCwaCurrentTemperature.setText("" + getRoundInString(cityWeather.getCurrentTemperature()) + "ºC");
         tvCwaWeatherCondition.setText(cityWeather.getWeatherCondition());
-        tvCwaMinMaxTemp.setText(round(cityWeather.getMinTemperature()) + " | " + round(cityWeather.getMaxTemperature()));
-        tvCwaWindSpeed.setText(round(cityWeather.getWindSpeed()) + "");
-        tvCwaHumidityValue.setText(round(cityWeather.getHumidity()) + "%");
+        tvCwaMinMaxTemp.setText(
+                getRoundInString(cityWeather.getMinTemperature()) + "ºC | " +
+                getRoundInString(cityWeather.getMaxTemperature()) + "ºC");
+        tvCwaWindSpeed.setText(getRoundInString(cityWeather.getWindSpeed()) + " km/h");
+        tvCwaHumidityValue.setText(getRoundInString(cityWeather.getHumidity()) + "%");
 
         String weatherConditionIcon = getImageNameFromWeatherConditionID(cityWeather.weatherConditionID);
         int resourceImageID = this.getResources().getIdentifier( weatherConditionIcon, "drawable", this.getPackageName());

@@ -1,4 +1,4 @@
-package pt.franciscorp.wit_challenge;
+package pt.franciscorp.wit_challenge.Weather;
 
 import java.util.ArrayList;
 
