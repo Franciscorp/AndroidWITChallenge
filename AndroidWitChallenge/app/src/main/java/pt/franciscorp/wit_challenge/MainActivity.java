@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import pt.franciscorp.wit_challenge.Utils.Constants;
+import pt.franciscorp.wit_challenge.Utils.Logger;
 import pt.franciscorp.wit_challenge.Utils.Util;
 
 import static pt.franciscorp.wit_challenge.Utils.Constants.locationUpdateInterval;
@@ -68,20 +72,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-
         this.setTitle("");
-
-
         setLayoutForApp();
 
         //UI START UP
         textViewWeatherInfo = findViewById(R.id.TextViewWeatherInfo);
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
-
-        weatherData = new WeatherData();
-        connectionToApiThreads = new Thread[weatherData.cityWeatherArrayList.size()];
         listViewWeatherCities = findViewById(R.id.lvWeatherCities);
-        setWeatherListView();
 
         //TODO improve
         if (!getAppPermissions())
@@ -90,18 +87,23 @@ public class MainActivity extends AppCompatActivity {
         //VARS START UP
         weatherCommunication = new OpenWeatherMapCommunication();
         updateWeatherHandler = new Handler();
+        weatherData = new WeatherData();
+        connectionToApiThreads = new Thread[weatherData.cityWeatherArrayList.size()];
+        setWeatherListView();
 
         updateLocationAndGetItsWeather();
         startWeatherUpdateTask();
 
-//        getAllCitiesWeatherFromApi();
+        listViewWeatherCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent myIntent = new Intent(this, CityWeatherActivity.class);
+//                weatherData.cityWeatherArrayList
+//                myIntent.putExtra("CityWeather", (CityWeather)weatherData.cityWeatherArrayList.get(position));
+                getApplication().startActivity(myIntent);
+            }
 
-//        callWeatherApi(weatherData.cityWeatherArrayList.get(0));
-        System.out.println();
-
-        //form the list
-
-
+        });
     }
 
     @Override
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         weatherUpdateRunnable.run();
     }
 
-    //TODO ver callbacks
+    //TODO see callbacks theory
     void stopWeatherUpdateTask() {
         updateWeatherHandler.removeCallbacks(weatherUpdateRunnable);
     }
@@ -152,22 +154,18 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            //current location was based on long and lat
                             currentLocationCityWeather = new CityWeather(location.getLatitude(), location.getLongitude());
                             weatherData.cityWeatherArrayList.set(0, currentLocationCityWeather);
-
                             callWeatherApi(0, currentLocationCityWeather);
 
                             try {
                                 connectionToApiThreads[0].join(threadTimeout);
-                            } catch (InterruptedException e) {
-                                //TODO logger
-                                e.printStackTrace();
+                            } catch (InterruptedException exception) {
+                                Logger.crashLog("MainActivity", "Location: An error occured while waiting for Current Weather Thread from API.", exception);
                             }
                             setWeatherListView();
-
-                            //TODO many cases won't be able to update the current location before getting the current weather
-                            //will only update in the next one
+                        }else{
+                            Logger.log("MainActivity", "Location: An error occured while getting location. Location was null.");
                         }
                     }
                 });

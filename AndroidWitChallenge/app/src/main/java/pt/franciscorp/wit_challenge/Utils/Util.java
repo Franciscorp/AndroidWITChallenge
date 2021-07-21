@@ -100,6 +100,8 @@ public class Util {
             return false;
     }
 
+    //JSON PARSING UTIL
+
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
         JSONObject subObj = jObj.getJSONObject(tagName);
         return subObj;
