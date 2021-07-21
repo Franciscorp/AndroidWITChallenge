@@ -23,13 +23,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity"
     android:layout_weight="1" >
-<!--    elements_vertical_margin-->
+
     <TextView
         android:id="@+id/tvCwaCityName"
-        style="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#990000"
+        android:theme="@style/SecondaryRedTitle"
         android:layout_centerHorizontal="true">
     </TextView>
 
@@ -48,14 +47,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_below="@+id/tvCwaCityName"
         android:weightSum="1">
 
-        <!-- Image weather condition -->
         <ImageView
             android:id="@+id/ivCwaWeatherIcon"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
+            android:adjustViewBounds="true"
+            android:padding="8dp"
             android:layout_weight="0.5"/>
 
         <TextView
@@ -64,6 +65,7 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:textSize="80sp"
+            android:padding="8dp"
             android:layout_weight="0.5">
         </TextView>
 
@@ -73,7 +75,7 @@
     <TextView
         android:id="@+id/tvCwaWeatherCondition"
         android:layout_width="wrap_content"
-        style="@style/NormalTextWeatherActivity"
+        style="@style/SubTitleTextWeatherActivity"
         android:layout_height="wrap_content"
         android:layout_below="@id/llCwaIconTemp"
         android:layout_centerHorizontal="true"
@@ -84,7 +86,7 @@
         android:id="@+id/tvCwaMinMaxTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/NormalTextWeatherActivity"
+        style="@style/SubTitleTextWeatherActivity"
         android:layout_below="@id/tvCwaWeatherCondition"
         android:layout_centerHorizontal="true"
         >

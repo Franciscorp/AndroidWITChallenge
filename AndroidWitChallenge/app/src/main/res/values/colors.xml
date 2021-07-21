@@ -14,6 +14,7 @@
 
 
     <color name="BlackLetter">#000000</color>
+    <color name="DarkRedLetter">#990000</color>
     <color name="BlueWord">#4472c4</color>
     <color name="AndroidGray">#d3d3d3</color>
 

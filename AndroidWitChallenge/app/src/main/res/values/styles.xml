@@ -15,6 +15,16 @@
         <item name="android:padding">4dp</item>
     </style>
 
+
+    <style name="SubTitleTextWeatherActivity">
+        <item name="android:textSize">28sp</item>
+        <item name="android:gravity">center</item>
+        <item name ="android:color">@color/BlackLetter</item>
+        <item name ="android:textColor">@color/BlackLetter</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+
     <style name="NormalTextWeatherActivity">
         <item name="android:textSize">22sp</item>
         <item name="android:gravity">center</item>
@@ -23,45 +33,12 @@
         <item name="android:padding">8dp</item>
     </style>
 
-    <style name="TituloPrincipal">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name ="android:color">@color/BlackLetter</item>
-        <item name ="android:textColor">@color/BlackLetter</item>
-        <item name="android:padding">12dp</item>
+    <style name="SecondaryRedTitle">
+        <item name="android:textSize">36sp</item>
+        <item name="android:gravity">center</item>
+        <item name ="android:color">@color/DarkRedLetter</item>
+        <item name ="android:textColor">@color/DarkRedLetter</item>
+        <item name="android:padding">16dp</item>
     </style>
-
-    <style name="TituloSecundario">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:padding">4dp</item>
-    </style>
-
-
-    <style name="TituloCategoria">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
-        <item name ="android:color">@color/BlackLetter</item>
-        <item name ="android:textColor">@color/BlackLetter</item>
-    </style>
-
-    <style name="ValorSubCategoriaV2">
-        <item name="android:textSize">16sp</item>
-        <item name ="android:color">@color/BlackLetter</item>
-        <item name ="android:textColor">@color/BlackLetter</item>
-        <item name="android:paddingLeft">2dp</item>
-    </style>
-
-    <style name="TituloEventos">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name ="android:color">@color/BlackLetter</item>
-        <item name ="android:textColor">@color/BlackLetter</item>
-        <item name="android:padding">4dp</item>
-    </style>
-
-
 
 </resources>

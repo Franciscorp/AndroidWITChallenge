@@ -23,10 +23,6 @@ public class CityWeatherActivity extends AppCompatActivity {
     private TextView tvCwaCurrentTemperature;
     private TextView tvCwaWeatherCondition;
     private TextView tvCwaMinMaxTemp;
-
-
-
-
     private TextView tvCwaWindSpeed;
     private TextView tvCwaHumidityValue;
 
@@ -37,7 +33,8 @@ public class CityWeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_city_weather);
-        this.setTitle("");
+        this.setTitle(R.string.app_title);
+//        this.setTitle("");
 
         setupViewsFromIDS();
         cityWeather = (CityWeather)getIntent().getSerializableExtra("CityWeather");
@@ -62,7 +59,7 @@ public class CityWeatherActivity extends AppCompatActivity {
         tvCwaCurrentTemperature.setText("" + getRoundInString(cityWeather.getCurrentTemperature()) + "ºC");
         tvCwaWeatherCondition.setText(cityWeather.getWeatherCondition());
         tvCwaMinMaxTemp.setText(
-                getRoundInString(cityWeather.getMinTemperature()) + "ºC | " +
+                getRoundInString(cityWeather.getMinTemperature()) + "ºC   |   " +
                 getRoundInString(cityWeather.getMaxTemperature()) + "ºC");
         tvCwaWindSpeed.setText(getRoundInString(cityWeather.getWindSpeed()) + " km/h");
         tvCwaHumidityValue.setText(getRoundInString(cityWeather.getHumidity()) + "%");

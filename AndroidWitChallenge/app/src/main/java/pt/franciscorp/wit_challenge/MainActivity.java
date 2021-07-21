@@ -59,6 +59,7 @@ import static pt.franciscorp.wit_challenge.Weather.WeatherUtils.getCityWeatherFr
 //60m finished layout with data already included. Round ups need to remove the ".0"
 //25m design listView. Choosing themes and styles
 //43m design improments. Round up corrections. Themes applied. Refactoring. Shadows
+//34m finishing the design of WeatherDataActivity. Themes were applied
 
 
 public class MainActivity extends AppCompatActivity {
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //TODO
         this.setTitle(R.string.app_title);
-        this.setTitle("");
+//        this.setTitle("");
         setLayoutForApp();
 
         //UI START UP
